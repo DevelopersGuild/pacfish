@@ -3,6 +3,7 @@
 #include "Overlap.h"
 #include <cstdlib>
 using namespace std;
+
 void handleEvent(sf::RenderWindow& window)
 {
 	sf::Event event;
@@ -12,72 +13,17 @@ void handleEvent(sf::RenderWindow& window)
 			window.close();
 	}
 }
-void handleCollision(sf::Sprite& PacFish, sf::Sprite& WallSprite, 
-	sf::Sprite& WallSprite1, sf::Sprite& WallSprite2,
-	sf::Sprite& WallSprite3, sf::Sprite& WallSprite4,
-	sf::Sprite& WallSprite5, sf::Sprite& WallSprite6,
-	sf::Sprite& WallSprite7, sf::Sprite& WallSprite8,
-	sf::Sprite& WallSprite9, sf::Vector2f& position)
+void handleCollision(sf::Sprite& PacFish, sf::Vector2f& position, sf::Sprite WallSprites[], int sizeOfArray)
 {
-	if (overlap(PacFish, WallSprite))
+	for (int i = 0; i < sizeOfArray; i++)
 	{
-		PacFish.setPosition(position);
+		if (overlap(PacFish, WallSprites[i]))
+		{
+			PacFish.setPosition(position);
+		}
 	}
-
-	if (overlap(PacFish, WallSprite1))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite2))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite3))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite4))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite5))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite6))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite7))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite8))
-	{
-		PacFish.setPosition(position);
-	}
-
-	if (overlap(PacFish, WallSprite9))
-	{
-		PacFish.setPosition(position);
-	}
-
 }
-
-
-void movement(sf::Sprite& PacFish, sf::Sprite& WallSprite,
-	sf::Sprite& WallSprite1, sf::Sprite& WallSprite2,
-	sf::Sprite& WallSprite3, sf::Sprite& WallSprite4,
-	sf::Sprite& WallSprite5, sf::Sprite& WallSprite6,
-	sf::Sprite& WallSprite7, sf::Sprite& WallSprite8,
-	sf::Sprite& WallSprite9, sf::RenderWindow& window)
+void movement(sf::Sprite& PacFish, sf::RenderWindow& window, sf::Sprite WallSprites[], int sizeOfArray)
 {
 	float moveSpeed = 0.1, moveSpeedR = -0.1;
 	sf::Vector2f currentPos = PacFish.getPosition();
@@ -107,16 +53,11 @@ void movement(sf::Sprite& PacFish, sf::Sprite& WallSprite,
 	{
 		PacFish.move(moveSpeedR, 0);
 	}
-
-	handleCollision(PacFish, WallSprite,
-		WallSprite1, WallSprite2,
-		WallSprite3, WallSprite4,
-		WallSprite5, WallSprite6,
-	    WallSprite7, WallSprite8,
-		WallSprite9, currentPos);
+	handleCollision(PacFish, currentPos, WallSprites, sizeOfArray);
 }
 int main()
 {
+	const int NUM_WALLS = 10;
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Movement");
 	sf::Texture Fish;
 	Fish.loadFromFile(resourcePath() + "assets/sprites/character_sprite2.png");
@@ -124,12 +65,15 @@ int main()
 	PacFish.setTexture(Fish);
 	PacFish.setPosition(100, 300);
 	PacFish.scale(0.05, 0.05);
+	
 	sf::Texture Wall;
 	Wall.loadFromFile(resourcePath() + "assets/sprites/wall.jpg");
-	sf::Sprite WallSprites[10];
-	for (int i = 0; i < 10; i++) {
+	sf::Sprite WallSprites[NUM_WALLS];
+
+	for (int i = 0; i < NUM_WALLS; i++)
+	{
 		WallSprites[i].setTexture(Wall);
-		WallSprites[i].scale(0.3, 0.6);
+		WallSprites[i].setScale(0.3, 0.6);
 	}
 
 	WallSprites[0].setPosition(310, 300);
@@ -146,22 +90,18 @@ int main()
 	WallSprites[8].setPosition(220, 80);
 	WallSprites[8].rotate(-90);
 	WallSprites[9].setPosition(700, 290);
-
+	
 	while (window.isOpen())
 	{
 		handleEvent(window);
 		window.clear();
 		window.draw(PacFish);
-		for (int j = 0; j < 10; j++) {
-			window.draw(WallSprites[j]);
+		for (int i = 0; i < NUM_WALLS; i++)
+		{
+			window.draw(WallSprites[i]);
 		}
 		window.display();
-		movement(PacFish, WallSprites[0], WallSprites[1],
-			WallSprites[2], WallSprites[3], 
-			WallSprites[4], WallSprites[5], 
-			WallSprites[6], WallSprites[7], 
-			WallSprites[8], WallSprites[9], window);
-		
+		movement(PacFish, window, WallSprites, NUM_WALLS);
 	}
 	return 0;
 }
