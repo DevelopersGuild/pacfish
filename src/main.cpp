@@ -12,6 +12,7 @@ void positionWalls(sf::Sprite[]);
 void handleEvent(sf::RenderWindow&);
 void handleWalls(sf::Sprite&, sf::Vector2f&, sf::Sprite[], int);
 void handleBullets(sf::Sprite&, sf::Vector2f&, vector <sf::Sprite>&);
+void gameOverScreen(sf::RenderWindow&);
 
 
 
@@ -75,15 +76,16 @@ void movement(sf::Sprite& PacFish, sf::RenderWindow& window, sf::Sprite WallSpri
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Movement");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "PacFish");
 	window.setVerticalSyncEnabled(true);
+	// PacFish
 	sf::Texture Fish;
 	Fish.loadFromFile(resourcePath() + "assets/sprites/character_sprite2.png");
 	sf::Sprite PacFish;
 	PacFish.setTexture(Fish);
 	PacFish.setPosition(100, 300);
 	PacFish.scale(0.05, 0.05);
-	//walls
+	// walls
 	sf::Texture Wall;
 	Wall.loadFromFile(resourcePath() + "assets/sprites/wall.jpg");
 	sf::Sprite WallSprites[NUM_WALLS];
@@ -113,29 +115,43 @@ int main()
 	}
 
 	// game	
+	bool isGameOver = false;
 	while (window.isOpen())
 	{
 		handleEvent(window);
 		window.clear();
-		// draw
+		// draw walls
 		for (int i = 0; i < NUM_WALLS; i++)
 		{
 			window.draw(WallSprites[i]);
 		}
-
-		for (int i = 0; i < bullets.size(); i++)
-		{
-			for (int j = 0; j < NUM_WALLS; j++)
+		
+		if (isGameOver == false)
+		{	//draw everything else
+			for (int i = 0; i < bullets.size(); i++)
 			{
-				if (overlap(bullets[i], WallSprites[j]))
-					bullets.erase(bullets.begin() + i);
+				for (int j = 0; j < NUM_WALLS; j++)
+				{
+					if (overlap(bullets[i], WallSprites[j]))
+						bullets.erase(bullets.begin() + i);
+				}
+				window.draw(bullets[i]);
 			}
-			window.draw(bullets[i]);
-		}
-		window.draw(PacFish);
+			window.draw(PacFish);
 
-		window.display();
-		movement(PacFish, window, WallSprites, NUM_WALLS, bullets);
+			window.display();
+			movement(PacFish, window, WallSprites, NUM_WALLS, bullets);
+
+		//game over requirments
+			if (bullets.size() == 0)
+				isGameOver = true;
+		}
+
+		if (isGameOver == true)
+		{
+			window.draw(PacFish);
+			gameOverScreen(window);
+		}
 	}
 
 
@@ -192,5 +208,19 @@ void handleBullets(sf::Sprite& PacFish, sf::Vector2f& position, vector <sf::Spri
 			bullets.erase(bullets.begin() + i);
 		}
 	}
+
+}
+
+
+//game over
+void gameOverScreen(sf::RenderWindow& window)
+{
+	sf::Font font;
+	font.loadFromFile(resourcePath() + "assets/prstartk.ttf");
+	sf::Text OverMessage("Game Over!", font);
+	OverMessage.setColor(sf::Color::Red);
+
+	window.draw(OverMessage);
+	window.display();
 
 }
