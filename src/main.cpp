@@ -5,7 +5,7 @@
 using namespace std;
 
 
-const int NUM_WALLS = 10;
+const int NUM_WALLS = 38;
 
 //FUNCTION
 void positionWalls(sf::Sprite[]);
@@ -62,7 +62,7 @@ void movement(sf::Sprite& PacFish, sf::RenderWindow& window, sf::Sprite WallSpri
 		}
 		if (PacFish.getPosition().x <= 0)
 			PacFish.setPosition(currentPos);
-		if (PacFish.getPosition().x >= window.getSize().x - 111)
+		if (PacFish.getPosition().x >= window.getSize().x - 66)
 			PacFish.setPosition(currentPos);
 	}
 
@@ -84,7 +84,7 @@ int main()
 	sf::Sprite PacFish;
 	PacFish.setTexture(Fish);
 	PacFish.setPosition(100, 300);
-	PacFish.scale(0.05, 0.05);
+	PacFish.scale(0.03, 0.03);
 	// walls
 	sf::Texture Wall;
 	Wall.loadFromFile(resourcePath() + "assets/sprites/wall.jpg");
@@ -93,7 +93,7 @@ int main()
 	for (int i = 0; i < NUM_WALLS; i++)
 	{
 		WallSprites[i].setTexture(Wall);
-		WallSprites[i].setScale(0.3, 0.6);
+		WallSprites[i].setScale(0.1, 0.4);
 	}
 	// create map
 	positionWalls(WallSprites);
@@ -161,20 +161,65 @@ int main()
 
 void positionWalls(sf::Sprite WallSprites[NUM_WALLS])
 {
-	WallSprites[0].setPosition(310, 300);
+	WallSprites[0].setPosition(120, 20);
 	WallSprites[0].rotate(-90);
-	WallSprites[1].setPosition(450, 290);
-	WallSprites[2].setPosition(0, 500);
-	WallSprites[3].setPosition(700, 300);
-	WallSprites[4].setPosition(0, 300);
+	WallSprites[1].setPosition(240, 20);
+	WallSprites[1].rotate(-90);
+	WallSprites[2].setPosition(0, 0);
+	WallSprites[3].setPosition(360, 0);
+	WallSprites[4].setPosition(120, 120);
 	WallSprites[4].rotate(-90);
-	WallSprites[5].setPosition(220, 500);
-	WallSprites[6].setPosition(310, 80);
-	WallSprites[7].setPosition(620, 180);
-	WallSprites[7].rotate(-90);
-	WallSprites[8].setPosition(220, 80);
+	WallSprites[5].setPosition(0, 120);
+	WallSprites[6].setPosition(120, 120);
+	WallSprites[7].setPosition(360, 120);
+	WallSprites[8].setPosition(120, 240);
 	WallSprites[8].rotate(-90);
-	WallSprites[9].setPosition(700, 290);
+	WallSprites[9].setPosition(240, 240);
+	WallSprites[9].rotate(-90);
+	WallSprites[10].setPosition(360, 240);
+	WallSprites[10].rotate(-90);
+	WallSprites[11].setPosition(0, 240);
+	WallSprites[12].setPosition(240, 240);
+	WallSprites[13].setPosition(480, 240);
+	WallSprites[14].setPosition(30, 390);
+	WallSprites[14].rotate(-90);
+	WallSprites[15].setPosition(360, 360);
+	WallSprites[15].rotate(-90);
+	WallSprites[16].setPosition(0, 390);
+	WallSprites[17].setPosition(360, 340);
+	WallSprites[18].setPosition(120, 490);
+	WallSprites[18].rotate(-90);
+	WallSprites[19].setPosition(240, 490);
+	WallSprites[19].rotate(-90);
+	WallSprites[20].setPosition(0, 510);
+	WallSprites[21].setPosition(30, 610);
+	WallSprites[21].rotate(-90);
+	WallSprites[22].setPosition(150, 610);
+	WallSprites[22].rotate(-90);
+	WallSprites[23].setPosition(270, 610);
+	WallSprites[23].rotate(-90);
+	WallSprites[24].setPosition(390, 610);
+	WallSprites[24].rotate(-90);
+	WallSprites[25].setPosition(480, 360);
+	WallSprites[26].setPosition(600, 480);
+	WallSprites[27].setPosition(600, 480);
+	WallSprites[27].rotate(-90);
+	WallSprites[28].setPosition(600, 360);
+	WallSprites[28].rotate(-90);
+	WallSprites[29].setPosition(720, 360);
+	WallSprites[29].rotate(-90);
+	WallSprites[30].setPosition(600, 240);
+	WallSprites[30].rotate(-90);
+	WallSprites[31].setPosition(600, 120);
+	WallSprites[32].setPosition(480, 120);
+	WallSprites[32].rotate(-90);
+	WallSprites[33].setPosition(480, 120);
+	WallSprites[34].setPosition(720, 120);
+	WallSprites[34].rotate(-90);
+	WallSprites[35].setPosition(600, 90); //filler for 31
+	WallSprites[36].setPosition(0, 390); //filler for 14
+	WallSprites[36].rotate(-90);
+	WallSprites[37].setPosition(360, 370); //filler for 17
 }
 
 void handleEvent(sf::RenderWindow& window)
